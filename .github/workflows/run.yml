@@ -30,7 +30,11 @@ jobs:
             ${{ runner.os }}-pip-
             
       - name: 'Install dependencies'
-        run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        run: |
+          if [ -f requirements.txt ]; then
+            # 使用缓存路径安装依赖
+            pip install --cache-dir ~/.cache/pip -r requirements.txt
+          fi
       - name: 'run cf2dns v4'
         if: env.UPDATE_IPV4 == 'true' && !cancelled()
         env:
